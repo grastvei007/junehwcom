@@ -37,9 +37,9 @@ else{
 LIBS += -L$$(DEV_LIBS) -ltagsystem
 }
 
-INCLUDEPATH += ../tagsystem \
-                ../device \
-            ../include
+INCLUDEPATH += ../../tagsystem \
+                ../../device \
+            ../../include
 
 
 
