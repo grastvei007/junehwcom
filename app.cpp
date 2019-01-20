@@ -45,6 +45,7 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
 
     InputDeviceManager::sGetInstance().setDetectInputDevicesInterval(1000);
 
+    TagList::sGetInstance().setClientName("JuneHwCom");
     TagList::sGetInstance().connectToServer("localhost", 5000);
 
 }

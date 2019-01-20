@@ -37,7 +37,7 @@ else{
 LIBS += -L$$(DEV_LIBS) -ltagsystem
 }
 
-INCLUDEPATH += ../
+INCLUDEPATH += ..
 
 
 
