@@ -1,7 +1,7 @@
 QT -= gui
 QT += widgets serialport
 
-CONFIG += c++11 console
+CONFIG += c++14 console
 CONFIG -= app_bundle
 
 release: TARGET = junehwcom
@@ -29,12 +29,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 if(debug){
-LIBS += -L$$(DEV_LIBS) -ltagsystemd \
-        -ldeviced
+LIBS += -L$$(DEV_LIBS) -ldeviced -ltagsystemd
+
 
 }
 else{
-LIBS += -L$$(DEV_LIBS) -ltagsystem
+LIBS += -L$$(DEV_LIBS) -ldevice -ltagsystem
 }
 
 INCLUDEPATH += ..
