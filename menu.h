@@ -33,6 +33,8 @@ private slots:
 
     void onDeviceDisconnected(QString aDeviceName);
     void onShowTagSocketListActionTriggered(bool aChecked);
+    void onSpy(QString aDeviceName);
+
 private:
     std::unique_ptr<QMenu> mMenu;
     std::unique_ptr<QMenu> mAvailableDevicesMenu;

@@ -9,9 +9,15 @@ class Console : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit Console(Device *aDevice, QWidget *parent = nullptr);
+    Console(QWidget *parent=nullptr);
+    Console(Device *aDevice, QWidget *parent = nullptr);
     virtual ~Console();
 
+    void setData(QString aInfo, QByteArray aData);
+
+public slots:
+    void setInData(QByteArray aData);
+    void setOutData(QByteArray aData);
 
 signals:
     void closed();

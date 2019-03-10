@@ -7,6 +7,9 @@
 #include <device/inputdevicemanager.h>
 #include <tagsystem/tagsocketlistview.h>
 
+#include <device/msg/messagehandlermanager.h>
+#include <device/msg/messagehandler.h>
+
 Menu::Menu(QObject *parent) : QObject(parent)
 {
     mMenu.reset(new QMenu("Serial devices"));
@@ -66,6 +69,8 @@ void Menu::onConnectedDevices(QString aName)
     dis->setData(aName);
     QAction *con = menu->addAction("Show console");
     con->setData(aName);
+    QAction *spy = menu->addAction("Spy");
+    spy->setData(aName);
 
 }
 
@@ -101,6 +106,8 @@ void Menu::onConnectedDevicesActionTriggered(QAction *aAction)
         QString deviceName = aAction->data().toString();
         Device *device = InputDeviceManager::sGetInstance().getInputDevice(deviceName);
         Console *console = new Console(device);
+        console->setAttribute(Qt::WA_DeleteOnClose, true);
+        console->setAttribute(Qt::WA_QuitOnClose, false);
         console->setVisible(true);
         console->raise();
         connect(console, &Console::closed, console, &Console::deleteLater);
@@ -110,6 +117,10 @@ void Menu::onConnectedDevicesActionTriggered(QAction *aAction)
         QString deviceName = aAction->data().toString();
         qDebug() << "Disconnect " << deviceName;
         InputDeviceManager::sGetInstance().disconnectInputDevice(deviceName);
+    }
+    else if(aAction->text() == "Spy")
+    {
+        onSpy(aAction->data().toString());
     }
 }
 
@@ -165,4 +176,25 @@ void Menu::onShowTagSocketListActionTriggered(bool aChecked)
     mTagSocketListViewWidget->setAttribute(Qt::WA_QuitOnClose, false);
     mTagSocketListViewWidget->setVisible(true);
     mTagSocketListViewWidget->show();
+}
+
+
+void Menu::onSpy(QString aDeviceName)
+{
+    Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceName);
+    if(!device)
+        return;
+    MessageHandler *mh = MessageHandlerManager::sGetInstance().getMessageHandlerForDevice(device);
+    if(!mh)
+        return;
+
+    Console *console = new Console();
+    console->setAttribute(Qt::WA_DeleteOnClose, true);
+    console->setAttribute(Qt::WA_QuitOnClose, false);
+    console->setVisible(true);
+    console->raise();
+
+    connect(mh, &MessageHandler::debugMessageRead, console, &Console::setInData);
+    connect(mh, &MessageHandler::debugMessageWrite, console, &Console::setOutData);
+
 }
