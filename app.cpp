@@ -17,7 +17,9 @@
 
 App::App(int argc, char *argv[]) : QApplication(argc, argv)
 {
-    setApplicationName("June hw communicator");
+    setOrganizationName("MySoft");
+    setOrganizationDomain("mysoft.com");
+    setApplicationName("JuneHwCom");
     setApplicationVersion("0.1");
 
     QCommandLineParser parser;
@@ -45,7 +47,7 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
 
     InputDeviceManager::sGetInstance().setDetectInputDevicesInterval(1000);
 
-    TagList::sGetInstance().setClientName("JuneHwCom");
+    TagList::sGetInstance().setClientName(applicationName());
     TagList::sGetInstance().connectToServer("localhost", 5000);
 
 }

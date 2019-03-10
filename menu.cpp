@@ -5,6 +5,7 @@
 #include "gui/console.h"
 
 #include <device/inputdevicemanager.h>
+#include <tagsystem/tagsocketlistview.h>
 
 Menu::Menu(QObject *parent) : QObject(parent)
 {
@@ -21,6 +22,8 @@ Menu::Menu(QObject *parent) : QObject(parent)
 
     connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceDisconnected, this, &Menu::onDeviceDisconnected);
     connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceConnected, this, &Menu::onConnectedDevices);
+
+    setupViewMenu();
 }
 
 Menu::~Menu()
@@ -71,6 +74,23 @@ void Menu::setupSerialportSettingsMenu()
 {
     mSerialportSettings.reset(new QMenu("Serialport Settings"));
     mMenu->addMenu(mSerialportSettings.get());
+
+    QMenu *baudMenu = mSerialportSettings->addMenu("BaudRate");
+    QAction *action9600 = baudMenu->addAction("9600");
+    action9600->setCheckable(true);
+    action9600->setChecked(true);
+
+    QAction *action19200 = baudMenu->addAction("19200");
+    action19200->setCheckable(true);
+    action19200->setChecked(false);
+
+    QAction *action38400 = baudMenu->addAction("38400");
+    action38400->setCheckable(true);
+    action38400->setChecked(false);
+
+    QAction *action115200 = baudMenu->addAction("115200");
+    action115200->setCheckable(true);
+    action115200->setChecked(false);
 
 }
 
@@ -123,4 +143,26 @@ void Menu::onDeviceDisconnected(QString aDeviceName)
         mConnectedDeviceMenuMap[aDeviceName]->deleteLater();
         mConnectedDeviceMenuMap.remove(aDeviceName);
     }
+}
+
+
+void Menu::setupViewMenu()
+{
+    mViewMenu.reset(new QMenu("View"));
+    QAction *action = mViewMenu->addAction("Show TagSocket List");
+    connect(action, &QAction::triggered, this, &Menu::onShowTagSocketListActionTriggered);
+
+    mMenu->addMenu(mViewMenu.get());
+}
+
+
+void Menu::onShowTagSocketListActionTriggered(bool aChecked)
+{
+    mTagSocketListViewWidget.release();
+    mTagSocketListViewWidget.reset(new TagSocketListView);
+
+    mTagSocketListViewWidget->setAttribute(Qt::WA_DeleteOnClose, true);
+    mTagSocketListViewWidget->setAttribute(Qt::WA_QuitOnClose, false);
+    mTagSocketListViewWidget->setVisible(true);
+    mTagSocketListViewWidget->show();
 }

@@ -25,17 +25,22 @@ public slots:
 
 private:
     void setupSerialportSettingsMenu();
+    void setupViewMenu();
 
 private slots:
     void onConnectedDevicesActionTriggered(QAction *aAction);
     void onMenuActionTriggered(QAction *aAction);
 
     void onDeviceDisconnected(QString aDeviceName);
+    void onShowTagSocketListActionTriggered(bool aChecked);
 private:
     std::unique_ptr<QMenu> mMenu;
     std::unique_ptr<QMenu> mAvailableDevicesMenu;
     std::unique_ptr<QMenu> mConnectedDevicesMenu;
     std::unique_ptr<QMenu> mSerialportSettings;
+    std::unique_ptr<QMenu> mViewMenu;
+
+    std::unique_ptr<QWidget> mTagSocketListViewWidget;
 
     QMap<QString, QMenu*> mAvailableDeviceMenuMap;
     QMap<QString, QMenu*> mConnectedDeviceMenuMap;
