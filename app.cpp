@@ -61,9 +61,10 @@ App::~App()
 
 void App::onDeviceAvailable(QString aDeviceNAme)
 {
+    qDebug() << "App::Dvice";
     //InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
-    Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceNAme);
-    qDebug() << device->getManufacturer();
+    QString name = InputDeviceManager::sGetInstance().getDeviceManufacturer(aDeviceNAme);
+    qDebug() << name;
 }
 
 
@@ -84,6 +85,7 @@ void App::onDeviceConnected(QString aDeviceName)
 {
     qDebug() << __FUNCTION__;
     Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceName);
+    qDebug() << device->getManufacturer();
     if(device->getPid() == 42) // default atmega device
     {
         MessageHandlerManager::sGetInstance().createMessageHandlerForDevice(device);

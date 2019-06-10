@@ -194,7 +194,7 @@ void Menu::onSpy(QString aDeviceName)
     console->setVisible(true);
     console->raise();
 
-    connect(mh, &MessageHandler::debugMessageRead, console, &Console::setInData);
-    connect(mh, &MessageHandler::debugMessageWrite, console, &Console::setOutData);
+    //connect(mh, &MessageHandler::debugMessageRead, console, &Console::setInData);
+    //connect(mh, &MessageHandler::debugMessageWrite, console, &Console::setOutData);
 
 }
