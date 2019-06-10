@@ -65,6 +65,8 @@ void App::onDeviceAvailable(QString aDeviceNAme)
     //InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
     QString name = InputDeviceManager::sGetInstance().getDeviceManufacturer(aDeviceNAme);
     qDebug() << name;
+    if(name == "1a86")
+        InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
 }
 
 
