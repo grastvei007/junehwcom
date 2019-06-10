@@ -62,6 +62,8 @@ App::~App()
 void App::onDeviceAvailable(QString aDeviceNAme)
 {
     //InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
+    Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceNAme);
+    qDebug() << device->getManufacturer();
 }
 
 
