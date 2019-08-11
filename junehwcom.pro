@@ -45,13 +45,17 @@ SOURCES += main.cpp \
     app.cpp \
     gui/systemtrayui.cpp \
     gui/console.cpp \
-    menu.cpp
+    menu.cpp \
+    settings.cpp \
+    gui/settingsmenu.cpp
 
 HEADERS += \
     app.h \
     gui/systemtrayui.h \
     gui/console.h \
-    menu.h
+    menu.h \
+    settings.h \
+    gui/settingsmenu.h
 
 RESOURCES += \
     resources.qrc

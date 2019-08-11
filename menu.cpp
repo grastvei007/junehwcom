@@ -3,6 +3,7 @@
 #include <QDebug>
 
 #include "gui/console.h"
+#include "gui/settingsmenu.h"
 
 #include <device/inputdevicemanager.h>
 #include <tagsystem/tagsocketlistview.h>
@@ -27,6 +28,8 @@ Menu::Menu(QObject *parent) : QObject(parent)
     connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceConnected, this, &Menu::onConnectedDevices);
 
     setupViewMenu();
+
+    mMenu->addMenu(new SettingsMenu("Settings"));
 }
 
 Menu::~Menu()
