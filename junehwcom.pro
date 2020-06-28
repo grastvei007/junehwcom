@@ -45,12 +45,18 @@ SOURCES += main.cpp \
     app.cpp \
     gui/systemtrayui.cpp \
     gui/console.cpp \
+    influxdb/bmv712smart.cpp \
+    influxdbfactory.cpp \
     menu.cpp
 
 HEADERS += \
     app.h \
+    factory.h \
+    factorybase.h \
     gui/systemtrayui.h \
     gui/console.h \
+    influxdb/bmv712smart.h \
+    influxdbfactory.h \
     menu.h
 
 RESOURCES += \

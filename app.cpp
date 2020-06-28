@@ -68,6 +68,10 @@ void App::onDeviceAvailable(QString aDeviceNAme)
     qDebug() << name;
     if(name == "1a86")
         InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
+    else if(name == "VictronEnergy")
+    {
+
+    }
 }
 
 
@@ -92,5 +96,9 @@ void App::onDeviceConnected(QString aDeviceName)
     if(device->getPid() == 42) // default atmega device
     {
         MessageHandlerManager::sGetInstance().createMessageHandlerForDevice(device);
+    }
+    else if(device->getManufacturer() == "VictronEnergy")
+    {
+
     }
 }
