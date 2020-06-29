@@ -37,7 +37,7 @@ else{
 LIBS += -L$$(DEV_LIBS) -ldevice -ltagsystem
 }
 
-INCLUDEPATH += ..
+INCLUDEPATH += $$(JUNE_ROOT)
 
 
 

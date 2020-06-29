@@ -15,6 +15,9 @@
 
 #include <tagsystem/taglist.h>
 
+#include "factorybase.h"
+#include "factory.h"
+
 App::App(int argc, char *argv[]) : QApplication(argc, argv)
 {
     setOrganizationName("MySoft");
@@ -32,7 +35,6 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
 
 
     parser.process(*this);
-
 
     InputDeviceManager::sGetInstance().setUseDefaultSerialSettingFlag(true);
     connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceAvailable, this, &App::onDeviceAvailable);
@@ -99,6 +101,13 @@ void App::onDeviceConnected(QString aDeviceName)
     }
     else if(device->getManufacturer() == "VictronEnergy")
     {
-
+        const std::string name = device->getDeviceName().toStdString();
+        std::unique_ptr<FactoryBase> fb;
+        fb.reset(Factory::sGetFactory().createInstance(name));
+        if(fb)
+        {
+            fb->setDevice(device);
+            mInfluxDbDevices.push_back(std::move(fb));
+        }
     }
 }

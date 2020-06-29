@@ -6,6 +6,7 @@
 
 class SystemTrayUI;
 class InputDeviceManager;
+class FactoryBase;
 
 class App : public QApplication
 {
@@ -25,6 +26,7 @@ private slots:
 
 private:
     std::unique_ptr<SystemTrayUI> mSystemTrayUI;
+    std::vector<std::unique_ptr<FactoryBase>> mInfluxDbDevices;
 };
 
 #endif // APP_H

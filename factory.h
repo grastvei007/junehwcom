@@ -5,8 +5,9 @@
 #include <string>
 #include <iostream>
 
-#include "factorybase.h"
+//#include "factorybase.h"
 
+class FactoryBase;
 
 template<typename Type>
 FactoryBase* createType() { return new Type; }
@@ -20,12 +21,17 @@ public:
         return sFactory;
     }
 
-    FactoryBase* create(const std::string &aKey);
+    FactoryBase* createInstance(const std::string &aKey)
+    {
+        if(mConstructors.find(aKey) == mConstructors.end())
+            return nullptr;
+        Creator createor = mConstructors[aKey];
+        return createor();
+    }
+
 
     template<typename Type>
      void addFactory(const std::string &aCreateKey);
-
-
 
 private:
      Factory(){}
@@ -35,12 +41,6 @@ protected:
 
     std::map<std::string, Creator> mConstructors;
 };
-
-FactoryBase* Factory::create(const std::string &aKey)
-{
-    Creator createor = mConstructors[aKey];
-    return createor();
-}
 
 
 template<typename Type>

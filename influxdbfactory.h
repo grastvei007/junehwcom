@@ -1,9 +1,8 @@
 #ifndef INFLUXDBFACTORY_H
 #define INFLUXDBFACTORY_H
 
-#include "factory.h"
 
-class InfluxDbFactory : public Factory
+class InfluxDbFactory
 {
 public:
     static void createFactory();

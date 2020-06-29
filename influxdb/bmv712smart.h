@@ -14,6 +14,11 @@ public:
 
     std::string id();
 
+
+private slots:
+    void onDeviceSet();
+
+
 };
 
 #endif // BMV712SMART_H
