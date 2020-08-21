@@ -70,9 +70,9 @@ void App::onDeviceAvailable(QString aDeviceNAme)
     qDebug() << name;
     if(name == "1a86")
         InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
-    else if(name == "VictronEnergy")
+    else if(name.contains("VictronEnergy"))
     {
-
+        InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
     }
 }
 
