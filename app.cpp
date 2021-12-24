@@ -51,7 +51,7 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
 
     TagList::sGetInstance().setClientName(applicationName());
     TagList::sGetInstance().connectToServer("localhost", 5000);
-    TagList::sGetInstance().setAutoconnectOnBroadcast(true);
+    //TagList::sGetInstance().connectToServer("192.168.39.117", 5000);
 
 }
 
