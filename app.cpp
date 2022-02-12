@@ -33,6 +33,10 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
     QCommandLineOption gui(QStringList() << "s" << "system_bar", "System bar");
     parser.addOption(gui);
 
+    QCommandLineOption serverIp("ip", "server-ip", "Connect to server");
+    serverIp.setDefaultValue("localhost");
+    parser.addOption(serverIp);
+
 
     parser.process(*this);
 
@@ -47,12 +51,11 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
         //connect(mSystemTrayUI.get(), &SystemTrayUI::messageClicked, this, &App::onMessageClicked);
     }
 
-    InputDeviceManager::sGetInstance().setDetectInputDevicesInterval(1000);
-
     TagList::sGetInstance().setClientName(applicationName());
-    TagList::sGetInstance().connectToServer("localhost", 5000);
-    //TagList::sGetInstance().connectToServer("192.168.39.117", 5000);
+    TagList::sGetInstance().connectToServer(parser.value(serverIp), 5000);
 
+
+    InputDeviceManager::sGetInstance().setDetectInputDevicesInterval(1000);
 }
 
 
