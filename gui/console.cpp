@@ -5,7 +5,7 @@
 
 #include <device/device.h>
 
-Console::Console(QWidget *parent) :
+Console::Console(QWidget *parent) : QPlainTextEdit(parent),
     mDevice(nullptr)
 {
     document()->setMaximumBlockCount(100);
@@ -38,7 +38,7 @@ Console::~Console()
 void Console::setData(QString aInfo, QByteArray aData)
 {
     QByteArray d;
-    d.append(aInfo);
+    d.append(aInfo.toLatin1());
     d.append(aData);
     putData(d);
 }
@@ -57,6 +57,7 @@ void Console::putData(QByteArray aData)
 void Console::closeEvent(QCloseEvent *event)
 {
     emit closed();
+    QPlainTextEdit::event(event);
 }
 
 

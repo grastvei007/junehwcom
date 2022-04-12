@@ -167,7 +167,7 @@ void Menu::setupViewMenu()
 }
 
 
-void Menu::onShowTagSocketListActionTriggered(bool aChecked)
+void Menu::onShowTagSocketListActionTriggered(bool /*aChecked*/)
 {
     mTagSocketListViewWidget.release();
     mTagSocketListViewWidget.reset(new TagSocketListView);
