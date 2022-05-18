@@ -18,7 +18,11 @@
 #include "factorybase.h"
 #include "factory.h"
 
+#ifdef NO_GUI
+App::App(int argc, char *argv[]) : QCoreApplication(argc, argv)
+#else
 App::App(int argc, char *argv[]) : QApplication(argc, argv)
+#endif
 {
     setOrganizationName("MySoft");
     setOrganizationDomain("mysoft.com");
@@ -43,14 +47,14 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
     InputDeviceManager::sGetInstance().setUseDefaultSerialSettingFlag(true);
     connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceAvailable, this, &App::onDeviceAvailable);
     connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceConnected, this, &App::onDeviceConnected);
-
+#ifndef NO_GUI
     if(parser.isSet(gui))
     {
         mSystemTrayUI.reset(new SystemTrayUI());
         connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceAvailable, mSystemTrayUI.get(), &SystemTrayUI::onDeviceAvailable);
         //connect(mSystemTrayUI.get(), &SystemTrayUI::messageClicked, this, &App::onMessageClicked);
     }
-
+#endif
     TagList::sGetInstance().setClientName(applicationName());
     TagList::sGetInstance().connectToServer(parser.value(serverIp), 5000);
 

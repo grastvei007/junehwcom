@@ -1,6 +1,8 @@
 QT -= gui
 QT += widgets serialport
 
+DEFINES += NO_GUI
+
 CONFIG += c++14 console
 CONFIG -= app_bundle
 
