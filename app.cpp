@@ -15,9 +15,6 @@
 
 #include <tagsystem/taglist.h>
 
-#include "factorybase.h"
-#include "factory.h"
-
 #ifdef NO_GUI
 App::App(int argc, char *argv[]) : QCoreApplication(argc, argv)
 #else
@@ -109,12 +106,5 @@ void App::onDeviceConnected(QString aDeviceName)
     else if(device->getManufacturer() == "VictronEnergy")
     {
         const std::string name = device->getDeviceName().toStdString();
-        std::unique_ptr<FactoryBase> fb;
-        fb.reset(Factory::sGetFactory().createInstance(name));
-        if(fb)
-        {
-            fb->setDevice(device);
-            mInfluxDbDevices.push_back(std::move(fb));
-        }
     }
 }

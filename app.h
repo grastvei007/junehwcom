@@ -7,7 +7,6 @@
 
 class SystemTrayUI;
 class InputDeviceManager;
-class FactoryBase;
 
 #ifdef NO_GUI
 class App : public QCoreApplication
@@ -33,7 +32,6 @@ private:
 #ifndef NO_GUI
     std::unique_ptr<SystemTrayUI> mSystemTrayUI;
 #endif
-    std::vector<std::unique_ptr<FactoryBase>> mInfluxDbDevices;
 };
 
 #endif // APP_H
