@@ -5,6 +5,8 @@
 #include <QApplication>
 #include <memory>
 
+#include <device/inputdevicemanager.h>
+
 class SystemTrayUI;
 class InputDeviceManager;
 
@@ -32,6 +34,8 @@ private:
 #ifndef NO_GUI
     std::unique_ptr<SystemTrayUI> mSystemTrayUI;
 #endif
+
+    InputDeviceManager inputDeviceManager_;
 };
 
 #endif // APP_H

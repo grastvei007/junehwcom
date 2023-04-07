@@ -16,9 +16,9 @@
 #include <tagsystem/taglist.h>
 
 #ifdef NO_GUI
-App::App(int argc, char *argv[]) : QCoreApplication(argc, argv)
+App::App(int argc, char *argv[]) : QCoreApplication(argc, argv), inputDeviceManager_()
 #else
-App::App(int argc, char *argv[]) : QApplication(argc, argv)
+App::App(int argc, char *argv[]) : QApplication(argc, argv), inputDeviceManager_()
 #endif
 {
     setOrganizationName("MySoft");
@@ -41,14 +41,14 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
 
     parser.process(*this);
 
-    InputDeviceManager::sGetInstance().setUseDefaultSerialSettingFlag(true);
-    connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceAvailable, this, &App::onDeviceAvailable);
-    connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceConnected, this, &App::onDeviceConnected);
+    inputDeviceManager_.setUseDefaultSerialSettingFlag(true);
+    connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceAvailable, this, &App::onDeviceAvailable);
+    connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceConnected, this, &App::onDeviceConnected);
 #ifndef NO_GUI
     if(parser.isSet(gui))
     {
-        mSystemTrayUI.reset(new SystemTrayUI());
-        connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceAvailable, mSystemTrayUI.get(), &SystemTrayUI::onDeviceAvailable);
+        mSystemTrayUI.reset(new SystemTrayUI(inputDeviceManager_));
+        connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceAvailable, mSystemTrayUI.get(), &SystemTrayUI::onDeviceAvailable);
         //connect(mSystemTrayUI.get(), &SystemTrayUI::messageClicked, this, &App::onMessageClicked);
     }
 #endif
@@ -56,7 +56,7 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv)
     TagList::sGetInstance().connectToServer(parser.value(serverIp), 5000);
 
 
-    InputDeviceManager::sGetInstance().setDetectInputDevicesInterval(1000);
+    inputDeviceManager_.setDetectInputDevicesInterval(1000);
 }
 
 
@@ -70,13 +70,13 @@ void App::onDeviceAvailable(QString aDeviceNAme)
 {
     qDebug() << "App::Dvice";
     //InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
-    QString name = InputDeviceManager::sGetInstance().getDeviceManufacturer(aDeviceNAme);
+    QString name = inputDeviceManager_.getDeviceManufacturer(aDeviceNAme);
     qDebug() << name;
     if(name == "1a86")
-        InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
+        inputDeviceManager_.connectInputDevice(aDeviceNAme);
     else if(name.contains("VictronEnergy"))
     {
-        InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
+        inputDeviceManager_.connectInputDevice(aDeviceNAme);
     }
 }
 
@@ -84,7 +84,7 @@ void App::onDeviceAvailable(QString aDeviceNAme)
 void App::onMessageClicked(QString aDeviceNAme)
 {
     qDebug() << __FUNCTION__;
-    Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceNAme);
+    Device *device = inputDeviceManager_.getInputDevice(aDeviceNAme);
     if(!device)
     {
         qDebug() << "Device not connected, " << aDeviceNAme;
@@ -97,7 +97,7 @@ void App::onMessageClicked(QString aDeviceNAme)
 void App::onDeviceConnected(QString aDeviceName)
 {
     qDebug() << __FUNCTION__;
-    Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceName);
+    Device *device = inputDeviceManager_.getInputDevice(aDeviceName);
     qDebug() << device->getManufacturer();
     if(device->getPid() == 42) // default atmega device
     {

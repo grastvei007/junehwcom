@@ -10,7 +10,8 @@
 #include <device/msg/messagehandlermanager.h>
 #include <device/msg/messagehandler.h>
 
-Menu::Menu(QObject *parent) : QObject(parent)
+Menu::Menu(InputDeviceManager &inputDeviceManager, QObject *parent) : QObject(parent),
+    inputDeviceManager_(inputDeviceManager)
 {
     mMenu.reset(new QMenu("Serial devices"));
 
@@ -23,8 +24,8 @@ Menu::Menu(QObject *parent) : QObject(parent)
 
     setupSerialportSettingsMenu();
 
-    connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceDisconnected, this, &Menu::onDeviceDisconnected);
-    connect(&InputDeviceManager::sGetInstance(), &InputDeviceManager::inputDeviceConnected, this, &Menu::onConnectedDevices);
+    connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceDisconnected, this, &Menu::onDeviceDisconnected);
+    connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceConnected, this, &Menu::onConnectedDevices);
 
     setupViewMenu();
 }
@@ -104,7 +105,7 @@ void Menu::onConnectedDevicesActionTriggered(QAction *aAction)
     if(aAction->text() == "Show console")
     {
         QString deviceName = aAction->data().toString();
-        Device *device = InputDeviceManager::sGetInstance().getInputDevice(deviceName);
+        Device *device = inputDeviceManager_.getInputDevice(deviceName);
         Console *console = new Console(device);
         console->setAttribute(Qt::WA_DeleteOnClose, true);
         console->setAttribute(Qt::WA_QuitOnClose, false);
@@ -116,7 +117,7 @@ void Menu::onConnectedDevicesActionTriggered(QAction *aAction)
     {
         QString deviceName = aAction->data().toString();
         qDebug() << "Disconnect " << deviceName;
-        InputDeviceManager::sGetInstance().disconnectInputDevice(deviceName);
+        inputDeviceManager_.disconnectInputDevice(deviceName);
     }
     else if(aAction->text() == "Spy")
     {
@@ -131,7 +132,7 @@ void Menu::onMenuActionTriggered(QAction *aAction)
     {
         QString deviceName = aAction->data().toString();
         qDebug() << "Connect " << deviceName;
-        InputDeviceManager::sGetInstance().connectInputDevice(deviceName);
+        inputDeviceManager_.connectInputDevice(deviceName);
     }
 }
 
@@ -181,7 +182,7 @@ void Menu::onShowTagSocketListActionTriggered(bool /*aChecked*/)
 
 void Menu::onSpy(QString aDeviceName)
 {
-    Device *device = InputDeviceManager::sGetInstance().getInputDevice(aDeviceName);
+    Device *device = inputDeviceManager_.getInputDevice(aDeviceName);
     if(!device)
         return;
     MessageHandler *mh = MessageHandlerManager::sGetInstance().getMessageHandlerForDevice(device);

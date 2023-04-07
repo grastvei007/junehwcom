@@ -3,7 +3,8 @@
 #include <QSystemTrayIcon>
 #include <QDebug>
 
-SystemTrayUI::SystemTrayUI()
+SystemTrayUI::SystemTrayUI(InputDeviceManager &inputDeviceManager) :
+    inputDeviceManager_(inputDeviceManager)
 {
     mSystemTrayIcon.reset(new QSystemTrayIcon());
     mSystemTrayIcon->setIcon(QIcon(":/icon"));
@@ -11,7 +12,7 @@ SystemTrayUI::SystemTrayUI()
     mSystemTrayIcon->setToolTip("June serialport com");
     connect(mSystemTrayIcon.get(), &QSystemTrayIcon::messageClicked, this, &SystemTrayUI::onMessageClicked);
 
-    mContestMenu.reset(new Menu);
+    mContestMenu.reset(new Menu(inputDeviceManager_));
     mSystemTrayIcon->setContextMenu(mContestMenu->getMenu());
 }
 

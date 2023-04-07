@@ -8,12 +8,13 @@
 #include <memory>
 
 class QAction;
+class InputDeviceManager;
 
 class Menu : public QObject
 {
     Q_OBJECT
 public:
-    explicit Menu(QObject *parent = nullptr);
+    explicit Menu(InputDeviceManager &inputDeviceManager, QObject *parent = nullptr);
     ~Menu();
 
     QMenu* getMenu();
@@ -36,6 +37,7 @@ private slots:
     void onSpy(QString aDeviceName);
 
 private:
+    InputDeviceManager &inputDeviceManager_;
     std::unique_ptr<QMenu> mMenu;
     std::unique_ptr<QMenu> mAvailableDevicesMenu;
     std::unique_ptr<QMenu> mConnectedDevicesMenu;

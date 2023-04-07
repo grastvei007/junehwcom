@@ -8,12 +8,13 @@
 #include "menu.h"
 
 class QSystemTrayIcon;
+class InputDeviceManager;
 
 class SystemTrayUI : public QObject
 {
     Q_OBJECT
 public:
-    SystemTrayUI();
+    SystemTrayUI(InputDeviceManager &inputDeviceManager);
     ~SystemTrayUI();
 
 signals:
@@ -26,6 +27,7 @@ private slots:
     void onMessageClicked();
 
 private:
+    InputDeviceManager &inputDeviceManager_;
     std::unique_ptr<QSystemTrayIcon> mSystemTrayIcon;
     std::unique_ptr<Menu> mContestMenu;
 
