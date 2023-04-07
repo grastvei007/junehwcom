@@ -27,7 +27,7 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv), inputDeviceManager_
     setApplicationVersion("0.1");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Brings serial port devices to june. \n Default serial port values:\n baudrate 9600 \n databits 8 \n no parity \n one stop bit \n no flow control\n");
+    parser.setApplicationDescription("Brings serial port devices to june.");
     parser.addHelpOption();
     parser.addVersionOption();
 
@@ -38,9 +38,12 @@ App::App(int argc, char *argv[]) : QApplication(argc, argv), inputDeviceManager_
     serverIp.setDefaultValue("localhost");
     parser.addOption(serverIp);
 
+    QCommandLineOption console("c", "console", "Print output to console");
+    parser.addOption(console);
 
     parser.process(*this);
 
+    writeToConsole_ = parser.isSet(console);
     inputDeviceManager_.setUseDefaultSerialSettingFlag(true);
     connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceAvailable, this, &App::onDeviceAvailable);
     connect(&inputDeviceManager_, &InputDeviceManager::inputDeviceConnected, this, &App::onDeviceConnected);

@@ -36,6 +36,7 @@ private:
 #endif
 
     InputDeviceManager inputDeviceManager_;
+    bool writeToConsole_ = false;
 };
 
 #endif // APP_H
