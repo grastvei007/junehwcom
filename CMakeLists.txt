@@ -61,9 +61,10 @@ endif()
 
 target_include_directories(hwcom INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
 
-
-add_custom_command(TARGET hwcom
-                   POST_BUILD
-                   COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:hwcom> $ENV{DEV_BIN} )
+set_target_properties(hwcom
+    PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/lib
+        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/$<CONFIG>/bin
+)
 
 
