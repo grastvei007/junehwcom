@@ -2,7 +2,7 @@
 #include <QtDebug>
 #include <QFile>
 #include <QTextStream>
-
+#include <iostream>
 
 void myMessageHandler(QtMsgType type, const QMessageLogContext &, const QString & msg)
 {
@@ -25,10 +25,11 @@ void myMessageHandler(QtMsgType type, const QMessageLogContext &, const QString 
         text = QString("Fatal: %1").arg(msg);
         break;
     }
-    QFile outFile("log");
+   /* QFile outFile("log");
     outFile.open(QIODevice::WriteOnly | QIODevice::Append);
     QTextStream ts(&outFile);
-    ts << text << Qt::endl;
+    ts << text << Qt::endl;*/
+    qDebug() << text;
 
     // fatal message should quit
     if(type == QtFatalMsg)
