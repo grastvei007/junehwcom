@@ -3,7 +3,6 @@ project(hwcom)
 
 set_target_properties(PROPERTIES DEBUG_POSTFIX "${CMAKE_DEBUG_POSTFIX}")
 
-include_directories($ENV{JUNE_ROOT})
 link_directories(${CMAKE_BINARY_DIR}/$<CONFIG>/lib)
 
 add_definitions(-DNO_GUI)
