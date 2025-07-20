@@ -71,13 +71,17 @@ App::~App()
 
 void App::onDeviceAvailable(QString aDeviceNAme)
 {
-    qDebug() << "App::Dvice";
+    qDebug() << "App::Dvice " << aDeviceNAme;
     //InputDeviceManager::sGetInstance().connectInputDevice(aDeviceNAme);
     QString name = inputDeviceManager_.getDeviceManufacturer(aDeviceNAme);
     qDebug() << name;
     if(name == "1a86")
         inputDeviceManager_.connectInputDevice(aDeviceNAme);
     else if(name.contains("VictronEnergy"))
+    {
+        inputDeviceManager_.connectInputDevice(aDeviceNAme);
+    }
+    else if(name.contains("123electric"))
     {
         inputDeviceManager_.connectInputDevice(aDeviceNAme);
     }
