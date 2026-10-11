@@ -85,6 +85,11 @@ void App::onDeviceAvailable(QString aDeviceNAme)
     {
         inputDeviceManager_.connectInputDevice(aDeviceNAme);
     }
+	else if(name.contains("Arduino  www.arduino.cc"))
+	{
+		qDebug() << "Arduino Mega 2560";
+		inputDeviceManager_.connectInputDevice(aDeviceNAme);
+	}
 }
 
 
